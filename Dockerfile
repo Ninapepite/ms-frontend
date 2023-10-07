@@ -1,13 +1,22 @@
 FROM node:lts-alpine
 
-ENV NODE_ENV=development
+# install simple http server for serving static content
+RUN npm install -g http-server
 
-EXPOSE 8080
-
+# make the 'app' folder the current working directory
 WORKDIR /app
 
-COPY . /app
-
+# copy both 'package.json' and 'package-lock.json' (if available)
+COPY package*.json ./
+RUN npm cache clean --force
+# install project dependencies
 RUN npm install
 
-CMD ["npm" ,"run", "serve"]
+# copy project files and folders to the current working directory (i.e. 'app' folder)
+COPY . .
+
+# build app for production with minification
+RUN npm run build
+
+EXPOSE 8080
+CMD [ "http-server", "dist" ]
