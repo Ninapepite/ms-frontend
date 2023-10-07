@@ -7,7 +7,7 @@ import { DefaultApolloClient } from '@vue/apollo-composable';
 
 // Créez une instance du client Apollo
 const apolloClient = new ApolloClient({
-    uri: 'http://localhost:4000', // Remplacez par l'URL de votre serveur GraphQL
+    uri: 'http://ms-gateway:4000', // Remplacez par l'URL de votre serveur GraphQL
     cache: new InMemoryCache(),
 });
 

@@ -47,7 +47,5 @@ export default {
 };
 </script>
   
-<style scoped>
-/* Ajoutez vos styles pour l'apparence de l'auto-complétion ici */
-</style>
+<style scoped></style>
   
