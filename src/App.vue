@@ -1,89 +1,50 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <div>
+    <!-- Navbar -->
+    <nav style="background-color: green; padding: 10px;">
+      <span style="float: right; color: white; font-size: 24px;">RapidoRelax</span>
+    </nav>
 
-    <!-- Header vert -->
-    <q-header elevated class="bg-green-4 glossy">
-      <q-toolbar>
+    <!-- Contenu principal -->
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+      <!-- Sélection de la ville -->
+      <CitySelect v-model="location" />
 
-        <!-- Bouton menu -->
-        <q-btn flat dense round @click="toggleDrawer" aria-label="Menu" icon="menu" />
+      <!-- Sélection de la personnalité -->
+      <PersonnalitySelect v-model="personality" />
 
-        <!-- Titre central -->
-        <q-toolbar-title class="text-white">
-          Ma Recherche
-        </q-toolbar-title>
+      <!-- Bouton de recherche et requête GraphQL -->
+      <graphqlComp :location="location" :personality="personality" />
 
-        <!-- Sélection de la ville -->
-        <q-input outlined v-model="location" placeholder="Choisissez une ville" class="q-mr-md" />
+      <!-- Barre de progression (je suppose qu'elle est intégrée dans le composant graphqlComp) -->
+      <!-- Si ce n'est pas le cas, vous pouvez l'ajouter ici. -->
+    </div>
 
-        <!-- Sélection de la personnalité -->
-        <q-select outlined v-model="personality" :options="personalityOptions" label="Personnalité" class="q-mr-md" />
-
-        <!-- Bouton de recherche -->
-        <q-btn @click="executeSearch" label="Rechercher" color="white" class="bg-green-7" />
-
-      </q-toolbar>
-    </q-header>
-
-    <!-- Le reste de votre layout... -->
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-grey-2">
-      <!-- ... (vos éléments du drawer) ... -->
-    </q-drawer>
-
-    <!-- Conteneur de la page principale -->
-    <q-page-container>
-
-      <!-- Affichage du résultat de la recherche -->
-      <ResponseGet :location="location" :personality="personality" />
-
-    </q-page-container>
-  </q-layout>
+    <!-- Résultat de la recherche (je suppose également qu'il est intégré dans graphqlComp) -->
+  </div>
 </template>
 
 <script>
-import { ref } from 'vue';
-
-// Importation des composants nécessaires
-import ResponseGet from './components/responseGet.vue';
+// Importation des composants
+import CitySelect from './components/citySelect.vue';
+import PersonnalitySelect from './components/personnalitySelect.vue';
+import graphqlComp from './components/graphqlComp.vue';
 
 export default {
-  name: 'LayoutDefault',
-
   components: {
-    ResponseGet
+    CitySelect,
+    PersonnalitySelect,
+    graphqlComp,
   },
-
-  setup() {
-    // État pour le tiroir (drawer) gauche
-    const leftDrawerOpen = ref(false);
-
-    // État pour la ville et la personnalité sélectionnées
-    const location = ref('');
-    const personality = ref('');
-    const personalityOptions = ref(['Joyeux', 'Triste', 'Énergique', 'Calme']); // Ajustez selon vos besoins
-
-    // Fonction pour ouvrir/fermer le drawer
-    const toggleDrawer = () => {
-      leftDrawerOpen.value = !leftDrawerOpen.value;
-    };
-
-    // Fonction exécutée lorsque l'utilisateur clique sur "Rechercher"
-    const executeSearch = () => {
-      // Ici, la logique de recherche est simplement une sortie console.
-      // Adaptez cela à vos besoins.
-      console.log(`Recherche pour ${location.value} avec personnalité ${personality.value}`);
-    };
-
+  data() {
     return {
-      leftDrawerOpen,
-      location,
-      personality,
-      personalityOptions,
-      toggleDrawer,
-      executeSearch
-    }
-  }
-}
+      location: '',       // Ville sélectionnée
+      personality: '',   // Personnalité sélectionnée
+    };
+  },
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+/* Ici, vous pouvez ajouter des styles spécifiques à ce composant. */
+</style>
